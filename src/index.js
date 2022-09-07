@@ -73,7 +73,6 @@ class Game extends React.Component {
             history: [{
                 squares: Array(9).fill(null),
                 lastIdx: -1,
-
             }],
             stepNumber: 0,
             xIsNext: true,
@@ -115,13 +114,12 @@ class Game extends React.Component {
             (step, move) => {
                 const x = Math.floor(step.lastIdx / 3);
                 const y = step.lastIdx % 3;
-                const desc  = move ?
-                    'Go to move #' + move + " (" + x + "," + y + ")"
-                    : 'Go to game start';
+                const desc  =
+                    move ? 'Go to move #' + move + " ( " + x + ", " + y + " )" : 'Go to game start';
                 return (
                     <li key={move}>
                         <button onClick={() => this.jumpTo(move)}>
-                            {desc}
+                            {move === this.state.stepNumber ? <b>{desc}</b> : desc}
                         </button>
                     </li>
                 )
@@ -131,6 +129,9 @@ class Game extends React.Component {
         let status;
         if (winner) {
             status = 'Winner: ' + winner;
+        }
+        else if(!current.squares.includes(null)) {
+            status = 'draw';
         }
         else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
